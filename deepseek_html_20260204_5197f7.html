@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Konselor BK - Sahabat Siswa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-blue: #1a73e8;
+            --secondary-blue: #4285f4;
+            --light-blue: #e8f0fe;
+            --dark-blue: #0d47a1;
+            --accent-blue: #5c9df5;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+            --text-dark: #333333;
+            --text-light: #666666;
+        }
+        
+        body {
+            background-color: #f0f7ff;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: linear-gradient(to bottom, #f0f7ff, #e3f2fd);
+        }
+        
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-content {
+            text-align: center;
+            color: white;
+            max-width: 600px;
+            padding: 20px;
+        }
+        
+        .loading-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .loading-logo i {
+            font-size: 60px;
+            color: white;
+        }
+        
+        .loading-text {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .loading-subtext {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+        
+        .loading-bar {
+            width: 300px;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background-color: white;
+            border-radius: 4px;
+            animation: loading 2s ease-in-out forwards;
+        }
+        
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--white);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: var(--dark-blue);
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            color: var(--primary-blue);
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        /* Selection Form */
+        .selection-form {
+            background-color: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(26, 115, 232, 0.1);
+            margin-bottom: 40px;
+        }
+        
+        .form-title {
+            color: var(--dark-blue);
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .form-subtitle {
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 30px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark-blue);
+            font-size: 18px;
+        }
+        
+        .select-container {
+            position: relative;
+            width: 100%;
+        }
+        
+        .select-container select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--light-blue);
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--text-dark);
+            background-color: var(--white);
+            appearance: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .select-container select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+        }
+        
+        .select-container::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            color: var(--primary-blue);
+            pointer-events: none;
+            font-size: 14px;
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 16px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--dark-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(26, 115, 232, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Audio Controls */
+        .audio-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+        
+        .audio-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(26, 115, 232, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .audio-btn:hover {
+            background-color: var(--dark-blue);
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(26, 115, 232, 0.4);
+        }
+        
+        /* Welcome Popup */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .popup {
+            background-color: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transform: translateY(30px);
+            transition: transform 0.5s ease;
+        }
+        
+        .popup-overlay.active .popup {
+            transform: translateY(0);
+        }
+        
+        .popup-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--light-blue);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px;
+        }
+        
+        .popup-icon i {
+            font-size: 36px;
+            color: var(--primary-blue);
+        }
+        
+        .popup h2 {
+            color: var(--dark-blue);
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+        
+        .popup p {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .popup .btn {
+            margin: 0 auto;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .selection-form {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .btn {
+                padding: 14px 30px;
+                font-size: 16px;
+            }
+            
+            .audio-controls {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .audio-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-link"></i>
+            </div>
+            <div class="loading-text">Memuat Link Konselor</div>
+            <div class="loading-subtext">Menyiapkan akses ke link konseling BK untuk Anda...</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Welcome Popup -->
+    <div class="popup-overlay" id="welcome-popup">
+        <div class="popup">
+            <div class="popup-icon">
+                <i class="fas fa-hands-helping"></i>
+            </div>
+            <h2>Selamat Datang!</h2>
+            <p>Senang bertemu dengan Anda! Di sini, Anda dapat mengakses link konselor BK dengan mudah. Pastikan untuk memilih kelas sesuai dengan kelas Anda untuk mendapatkan link yang tepat. Mari kita mulai!</p>
+            <button class="btn btn-primary" id="popup-continue-btn">
+                <i class="fas fa-play-circle"></i> Lanjutkan
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" id="main-content" style="display: none;">
+        <header>
+            <div class="logo-container">
+                <img src="https://files.catbox.moe/sydgqz.jpg" alt="Konselor BK" class="profile-img" id="profile-img">
+                <h1>Link Konselor BK</h1>
+                <p class="tagline">Sahabat Siswa - Pendamping Konseling Anda</p>
+            </div>
+        </header>
+
+        <main>
+            <div class="selection-form">
+                <h2 class="form-title">Pilih Kelas Anda</h2>
+                <p class="form-subtitle">Silakan pilih kelas Anda untuk mengakses link konselor yang sesuai</p>
+                
+                <div class="form-group">
+                    <label for="class-select">
+                        <i class="fas fa-graduation-cap"></i> Pilih Kelas Anda
+                    </label>
+                    <div class="select-container">
+                        <select id="class-select">
+                            <option value="" disabled selected>-- Silakan pilih kelas --</option>
+                            <option value="https://gurubkkonselor.com/evaluasi-layanan-klasikal/14130/244">XI TJKT 2</option>
+                            <option value="https://gurubkkonselor.com/evaluasi-layanan-klasikal/14131/244">XI PH 1</option>
+                            <option value="https://gurubkkonselor.com/evaluasi-layanan-klasikal/14133/244">XI PH 2</option>
+                            <option value="https://gurubkkonselor.com/evaluasi-layanan-klasikal/14129/244">XI TJKT 1</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" id="continue-btn" disabled>
+                        <i class="fas fa-arrow-right"></i> Lanjutkan ke Link Konselor
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Audio Controls -->
+    <div class="audio-controls">
+        <button class="audio-btn" id="audio-toggle">
+            <i class="fas fa-music"></i>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer" style="display: none;">
+        <p>&copy; 2023 Link Konselor BK - Sahabat Siswa. Semua hak dilindungi.</p>
+        <p>Website ini dibuat untuk memudahkan akses ke layanan konseling BK</p>
+    </footer>
+
+    <!-- Audio Element -->
+    <audio id="bg-music" loop>
+        <source src="https://audio.jukehost.co.uk/29RiK0WTrFElqzuX56HBqWO69TEvglEF" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <script>
+        // Elemen DOM
+        const loadingScreen = document.getElementById('loading-screen');
+        const mainContent = document.getElementById('main-content');
+        const footer = document.getElementById('footer');
+        const welcomePopup = document.getElementById('welcome-popup');
+        const classSelect = document.getElementById('class-select');
+        const continueBtn = document.getElementById('continue-btn');
+        const popupContinueBtn = document.getElementById('popup-continue-btn');
+        const audioToggle = document.getElementById('audio-toggle');
+        const bgMusic = document.getElementById('bg-music');
+        const profileImg = document.getElementById('profile-img');
+        
+        // Class data dengan nama dan link
+        const classData = {
+            "https://gurubkkonselor.com/evaluasi-layanan-klasikal/14130/244": "XI TJKT 2",
+            "https://gurubkkonselor.com/evaluasi-layanan-klasikal/14131/244": "XI PH 1",
+            "https://gurubkkonselor.com/evaluasi-layanan-klasikal/14133/244": "XI PH 2",
+            "https://gurubkkonselor.com/evaluasi-layanan-klasikal/14129/244": "XI TJKT 1"
+        };
+        
+        // State variables
+        let isMusicPlaying = false;
+        let selectedClass = "";
+        
+        // Simulate loading process
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    footer.style.display = 'block';
+                    
+                    // Show welcome popup after loading
+                    setTimeout(() => {
+                        welcomePopup.classList.add('active');
+                    }, 500);
+                }, 500);
+            }, 2500); // Loading screen duration
+        });
+        
+        // Handle class selection
+        classSelect.addEventListener('change', function() {
+            selectedClass = this.value;
+            
+            if (selectedClass) {
+                continueBtn.disabled = false;
+                continueBtn.innerHTML = `<i class="fas fa-arrow-right"></i> Lanjutkan ke ${classData[selectedClass]}`;
+            } else {
+                continueBtn.disabled = true;
+                continueBtn.innerHTML = `<i class="fas fa-arrow-right"></i> Lanjutkan ke Link Konselor`;
+            }
+        });
+        
+        // Handle continue button click
+        continueBtn.addEventListener('click', function() {
+            if (!selectedClass) {
+                alert("Silakan pilih kelas terlebih dahulu!");
+                return;
+            }
+            
+            // Play music when continue is clicked
+            if (!isMusicPlaying) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    audioToggle.innerHTML = '<i class="fas fa-pause"></i>';
+                }).catch(error => {
+                    console.log("Autoplay prevented:", error);
+                    // User interaction is already captured by the click, so we can try again
+                    bgMusic.play().then(() => {
+                        isMusicPlaying = true;
+                        audioToggle.innerHTML = '<i class="fas fa-pause"></i>';
+                    });
+                });
+            }
+            
+            // Confirmation before redirecting
+            const className = classData[selectedClass];
+            const confirmRedirect = confirm(`Anda akan diarahkan ke link konselor untuk kelas ${className}. Klik "OK" untuk melanjutkan.`);
+            
+            if (confirmRedirect) {
+                // Redirect to the selected link
+                window.open(selectedClass, '_blank');
+                
+                // Reset selection
+                classSelect.selectedIndex = 0;
+                continueBtn.disabled = true;
+                continueBtn.innerHTML = `<i class="fas fa-arrow-right"></i> Lanjutkan ke Link Konselor`;
+                selectedClass = "";
+            }
+        });
+        
+        // Handle popup continue button
+        popupContinueBtn.addEventListener('click', function() {
+            welcomePopup.classList.remove('active');
+            
+            // Play music when popup continue is clicked
+            if (!isMusicPlaying) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    audioToggle.innerHTML = '<i class="fas fa-pause"></i>';
+                }).catch(error => {
+                    console.log("Autoplay prevented:", error);
+                });
+            }
+        });
+        
+        // Handle audio toggle
+        audioToggle.addEventListener('click', function() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                audioToggle.innerHTML = '<i class="fas fa-music"></i>';
+            } else {
+                bgMusic.play().then(() => {
+                    audioToggle.innerHTML = '<i class="fas fa-pause"></i>';
+                }).catch(error => {
+                    console.log("Play failed:", error);
+                    // Show alert if play is blocked
+                    alert("Silakan klik tombol 'Lanjutkan' terlebih dahulu untuk memutar musik.");
+                    return;
+                });
+            }
+            
+            isMusicPlaying = !isMusicPlaying;
+        });
+        
+        // Handle music ended
+        bgMusic.addEventListener('ended', function() {
+            isMusicPlaying = false;
+            audioToggle.innerHTML = '<i class="fas fa-music"></i>';
+        });
+        
+        // Handle image error
+        profileImg.addEventListener('error', function() {
+            // If the image fails to load, show a placeholder
+            this.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Ccircle cx='75' cy='75' r='75' fill='%231a73e8'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='60'%3E%3Ctspan x='50%25' y='45%25'%3EBK%3C/tspan%3E%3Ctspan x='50%25' y='65%25' font-size='30'%3EKonselor%3C/tspan%3E%3C/text%3E%3C/svg%3E";
+            this.alt = "Placeholder - Konselor BK";
+        });
+        
+        // Add visual feedback for dropdown
+        classSelect.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'translateY(-2px)';
+        });
+        
+        classSelect.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'translateY(0)';
+        });
+        
+        // Add keyboard accessibility
+        document.addEventListener('keydown', function(event) {
+            // Enter key on continue button
+            if (event.key === 'Enter' && document.activeElement === classSelect && selectedClass) {
+                continueBtn.click();
+            }
+            
+            // Space key to toggle audio
+            if (event.key === ' ' && document.activeElement === audioToggle) {
+                event.preventDefault();
+                audioToggle.click();
+            }
+        });
+    </script>
+</body>
+</html>
