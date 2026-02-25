@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Konselor BK - Sahabat Siswa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-blue: #1a73e8;
+            --secondary-blue: #4285f4;
+            --light-blue: #e8f0fe;
+            --dark-blue: #0d47a1;
+            --accent-blue: #5c9df5;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --success: #34a853;
+            --warning: #fbbc05;
+            --error: #ea4335;
+        }
+        
+        body {
+            background-color: #f0f7ff;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: linear-gradient(to bottom, #f0f7ff, #e3f2fd);
+        }
+        
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-content {
+            text-align: center;
+            color: white;
+            max-width: 600px;
+            padding: 20px;
+        }
+        
+        .loading-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .loading-logo i {
+            font-size: 60px;
+            color: white;
+        }
+        
+        .loading-text {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .loading-subtext {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+        
+        .loading-bar {
+            width: 300px;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background-color: white;
+            border-radius: 4px;
+            animation: loading 2s ease-in-out forwards;
+        }
+        
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--white);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .profile-img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .profile-img:active {
+            transform: scale(0.98);
+        }
+        
+        .click-hint {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .logo-container:hover .click-hint {
+            opacity: 0.8;
+        }
+        
+        h1 {
+            color: var(--dark-blue);
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            color: var(--primary-blue);
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        /* Selection Form */
+        .selection-form {
+            background-color: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(26, 115, 232, 0.1);
+            margin-bottom: 40px;
+        }
+        
+        .form-title {
+            color: var(--dark-blue);
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .form-subtitle {
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark-blue);
+            font-size: 18px;
+        }
+        
+        .input-container {
+            position: relative;
+            width: 100%;
+        }
+        
+        .input-container input,
+        .input-container select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--light-blue);
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--text-dark);
+            background-color: var(--white);
+            transition: all 0.3s ease;
+        }
+        
+        .input-container input:focus,
+        .input-container select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+        }
+        
+        .input-container select {
+            appearance: none;
+            cursor: pointer;
+        }
+        
+        .select-container::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            color: var(--primary-blue);
+            pointer-events: none;
+            font-size: 14px;
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 16px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--dark-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(26, 115, 232, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-secondary {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--secondary-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(66, 133, 244, 0.3);
+        }
+        
+        .error-message {
+            color: var(--error);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success-message {
+            color: var(--success);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .code-display {
+            background-color: var(--light-blue);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            border: 2px dashed var(--accent-blue);
+            display: none;
+        }
+        
+        .code-display h3 {
+            color: var(--dark-blue);
+            margin-bottom: 10px;
+        }
+        
+        .generated-code {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-blue);
+            letter-spacing: 3px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .popup {
+            background-color: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transform: translateY(30px);
+            transition: transform 0.5s ease;
+        }
+        
+        .popup-overlay.active .popup {
+            transform: translateY(0);
+        }
+        
+        .popup-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--light-blue);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px;
+        }
+        
+        .popup-icon i {
+            font-size: 36px;
+            color: var(--primary-blue);
+        }
+        
+        .popup h2 {
+            color: var(--dark-blue);
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+        
+        .popup p {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+        
+        .popup .btn {
+            margin: 10px auto;
+        }
+        
+        /* Audio Controls */
+        .audio-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+        
+        .audio-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(26, 115, 232, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .audio-btn:hover {
+            background-color: var(--dark-blue);
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(26, 115, 232, 0.4);
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .selection-form {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .btn {
+                padding: 14px 30px;
+                font-size: 16px;
+            }
+            
+            .audio-controls {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .audio-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .popup {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-link"></i>
+            </div>
+            <div class="loading-text">Memuat Link Konselor</div>
+            <div class="loading-subtext">Menyiapkan akses ke link konseling BK untuk Anda...</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Welcome Popup -->
+    <div class="popup-overlay" id="welcome-popup">
+        <div class="popup">
+            <div class="popup-icon">
+                <i class="fas fa-hands-helping"></i>
+            </div>
+            <h2>Selamat Datang!</h2>
+            <p>Senang bertemu dengan Anda! Di sini, Anda dapat mengakses link konselor BK dengan mudah. Pastikan untuk memilih kelas sesuai dengan kelas Anda untuk mendapatkan link yang tepat. Mari kita mulai!</p>
+            <button class="btn btn-primary" id="popup-continue-btn">
+                <i class="fas fa-play-circle"></i> Lanjutkan
+            </button>
+        </div>
+    </div>
+
+    <!-- Secret Access Popup -->
+    <div class="popup-overlay" id="secret-popup">
+        <div class="popup">
+            <div class="popup-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2>Akses Rahasia BK</h2>
+            <p>Masukkan kode akses BK untuk melanjutkan:</p>
+            
+            <div class="form-group">
+                <div class="input-container">
+                    <input type="text" id="secret-code" placeholder="Contoh: STPC226" maxlength="7">
+                </div>
+                <div class="error-message" id="secret-error"></div>
+            </div>
+            
+            <div id="secret-access-content" style="display: none;">
+                <div class="success-message" id="secret-success"></div>
+                
+                <div class="form-group">
+                    <label for="materi-input">Materi Pembelajaran (minimal 7 karakter):</label>
+                    <div class="input-container">
+                        <input type="text" id="materi-input" placeholder="Contoh: bersahabat">
+                    </div>
+                    <div class="error-message" id="materi-error"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="kode-input">Kode Pembelajaran (3 angka):</label>
+                    <div class="input-container">
+                        <input type="text" id="kode-input" placeholder="Contoh: 244" maxlength="3" inputmode="numeric">
+                    </div>
+                    <div class="error-message" id="kode-error"></div>
+                </div>
+                
+                <button class="btn btn-secondary" id="generate-btn">
+                    <i class="fas fa-key"></i> Buat Kode Akses
+                </button>
+                
+                <div class="code-display" id="code-display">
+                    <h3>Kode Akses Berhasil Dibuat:</h3>
+                    <div class="generated-code" id="generated-code"></div>
+                    <p>Gunakan kode ini untuk mengakses link konselor</p>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" id="secret-close-btn">
+                <i class="fas fa-times"></i> Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" id="main-content" style="display: none;">
+        <header>
+            <div class="logo-container">
+                <img src="https://files.catbox.moe/sydgqz.jpg" alt="Konselor BK" class="profile-img" id="profile-img">
+                <div class="click-hint">Hai Apa Kabar ?</div>
+                <h1>Link Konselor BK</h1>
+                <p class="tagline">Sahabat Siswa - Pendamping Konseling Anda</p>
+            </div>
+        </header>
+
+        <main>
+            <div class="selection-form">
+                <h2 class="form-title">Pilih Kelas Anda</h2>
+                <p class="form-subtitle">Silakan pilih kelas Anda untuk mengakses link konselor yang sesuai</p>
+                
+                <div class="form-group">
+                    <label for="class-select">
+                        <i class="fas fa-graduation-cap"></i> Pilih Kelas Anda
+                    </label>
+                    <div class="input-container select-container">
+                        <select id="class-select">
+                            <option value="" disabled selected>-- Silakan pilih kelas --</option>
+                            <option value="14129">XI TJKT 1</option>
+                            <option value="14130">XI TJKT 2</option>
+                            <option value="14131">XI PH 1</option>
+                            <option value="14133">XI PH 2</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="access-code-group" style="display: none;">
+                    <label for="access-code-input">
+                        <i class="fas fa-key"></i> Masukkan Kode Akses
+                    </label>
+                    <div class="input-container">
+                        <input type="text" id="access-code-input" placeholder="Contoh: BSHT244" maxlength="7">
+                    </div>
+                    <div class="error-message" id="access-code-error"></div>
+                    <div class="success-message" id="access-code-success"></div>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" id="continue-btn" disabled>
+                        <i class="fas fa-external-link-alt"></i> Akses Link Konselor
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Audio Controls -->
+    <div class="audio-controls">
+        <button class="audio-btn" id="audio-toggle">
+            <i class="fas fa-music"></i>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer" style="display: none;">
+        <p>&copy; 2026 Link Konselor BK - Sahabat Siswa. Semua hak dilindungi.</p>
+        <p>Website ini dibuat untuk memudahkan akses ke layanan konseling BK</p>
+    </footer>
+
+    <!-- Audio Element -->
+    <audio id="bg-music" loop>
+        <source src="https://audio.jukehost.co.uk/29RiK0WTrFElqzuX56HBqWO69TEvglEF" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <script>
+        // =================== KONFIGURASI ===================
+        const CLASS_DATA = {
+            "14129": { name: "XI TJKT 1", id: "14129" },
+            "14130": { name: "XI TJKT 2", id: "14130" },
+            "14131": { name: "XI PH 1", id: "14131" },
+            "14133": { name: "XI PH 2", id: "14133" }
+        };
+        
+        const SECRET_CODES = {
+            "STPC226": "BUNDA SHINTA",
+            "STRN178": "SASTRO NEGORO"
+        };
+        
+        const BASE_LINK = "https://gurubkkonselor.com/evaluasi-layanan-klasikal";
+        
+        // =================== ELEMEN DOM ===================
+        const loadingScreen = document.getElementById('loading-screen');
+        const mainContent = document.getElementById('main-content');
+        const footer = document.getElementById('footer');
+        const welcomePopup = document.getElementById('welcome-popup');
+        const secretPopup = document.getElementById('secret-popup');
+        const profileImg = document.getElementById('profile-img');
+        const classSelect = document.getElementById('class-select');
+        const continueBtn = document.getElementById('continue-btn');
+        const popupContinueBtn = document.getElementById('popup-continue-btn');
+        const audioToggle = document.getElementById('audio-toggle');
+        const bgMusic = document.getElementById('bg-music');
+        
+        // Secret access elements
+        const secretCodeInput = document.getElementById('secret-code');
+        const secretError = document.getElementById('secret-error');
+        const secretSuccess = document.getElementById('secret-success');
+        const secretAccessContent = document.getElementById('secret-access-content');
+        const secretCloseBtn = document.getElementById('secret-close-btn');
+        
+        // Generate code elements
+        const materiInput = document.getElementById('materi-input');
+        const kodeInput = document.getElementById('kode-input');
+        const materiError = document.getElementById('materi-error');
+        const kodeError = document.getElementById('kode-error');
+        const generateBtn = document.getElementById('generate-btn');
+        const codeDisplay = document.getElementById('code-display');
+        const generatedCodeElement = document.getElementById('generated-code');
+        
+        // Access code elements
+        const accessCodeGroup = document.getElementById('access-code-group');
+        const accessCodeInput = document.getElementById('access-code-input');
+        const accessCodeError = document.getElementById('access-code-error');
+        const accessCodeSuccess = document.getElementById('access-code-success');
+        
+        // =================== VARIABEL STATE ===================
+        let isMusicPlaying = false;
+        let selectedClass = "";
+        let clickCount = 0;
+        let clickTimer = null;
+        let secretAccessGranted = false;
+        
+        // =================== FUNGSI UTAMA ===================
+        
+        // Simulate loading process
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    footer.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        welcomePopup.classList.add('active');
+                    }, 500);
+                }, 500);
+            }, 2500);
+        });
+        
+        // =================== FITUR 1: KLIK FOTO 3x ===================
+        profileImg.addEventListener('click', function() {
+            clickCount++;
+            
+            // Reset timer setelah 1 detik
+            if (clickTimer) clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 1000);
+            
+            // Jika klik 3x, buka popup rahasia
+            if (clickCount === 3) {
+                clickCount = 0;
+                secretPopup.classList.add('active');
+                secretCodeInput.focus();
+            }
+        });
+        
+        // =================== VALIDASI KODE RAHASIA ===================
+        secretCodeInput.addEventListener('input', function() {
+            const code = this.value.toUpperCase();
+            secretError.style.display = 'none';
+            
+            // Jika kode valid, tampilkan konten generate kode
+            if (SECRET_CODES[code]) {
+                secretAccessContent.style.display = 'block';
+                secretSuccess.textContent = `Selamat datang ${SECRET_CODES[code]}! Semoga sukses selalu.`;
+                secretSuccess.style.display = 'block';
+                secretAccessGranted = true;
+            } else if (code.length >= 4) {
+                secretError.textContent = "Kode akses tidak valid. Gunakan kode yang diberikan.";
+                secretError.style.display = 'block';
+                secretAccessContent.style.display = 'none';
+                secretAccessGranted = false;
+            } else {
+                secretAccessContent.style.display = 'none';
+                secretAccessGranted = false;
+            }
+        });
+        
+        // =================== GENERATE KODE AKSES SISWA ===================
+        generateBtn.addEventListener('click', function() {
+            // Validasi materi pembelajaran
+            const materi = materiInput.value.trim();
+            if (materi.length < 7) {
+                materiError.textContent = "Materi pembelajaran minimal 7 karakter!";
+                materiError.style.display = 'block';
+                materiInput.focus();
+                return;
+            } else {
+                materiError.style.display = 'none';
+            }
+            
+            // Validasi kode pembelajaran
+            const kode = kodeInput.value.trim();
+            if (!/^\d{3}$/.test(kode)) {
+                kodeError.textContent = "Kode pembelajaran harus 3 angka!";
+                kodeError.style.display = 'block';
+                kodeInput.focus();
+                return;
+            } else {
+                kodeError.style.display = 'none';
+            }
+            
+            // Generate kode: ambil huruf ke-1,3,5,7 + 3 angka
+            let hurufKode = "";
+            const posisi = [1, 3, 5, 7]; // Posisi yang diminta
+            
+            for (let pos of posisi) {
+                // Jika posisi melebihi panjang materi, gunakan huruf terakhir
+                if (pos - 1 < materi.length) {
+                    hurufKode += materi[pos - 1].toUpperCase();
+                } else {
+                    hurufKode += materi[materi.length - 1].toUpperCase();
+                }
+            }
+            
+            const kodeAkses = hurufKode + kode;
+            
+            // Tampilkan kode yang dihasilkan
+            generatedCodeElement.textContent = kodeAkses;
+            codeDisplay.style.display = 'block';
+            
+            // Scroll ke kode yang dihasilkan
+            codeDisplay.scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // =================== FITUR 2: SISTEM KODE AKSES LINK ===================
+        classSelect.addEventListener('change', function() {
+            selectedClass = this.value;
+            
+            if (selectedClass) {
+                // Tampilkan input kode akses
+                accessCodeGroup.style.display = 'block';
+                accessCodeInput.value = "";
+                accessCodeError.style.display = 'none';
+                accessCodeSuccess.style.display = 'none';
+                continueBtn.disabled = true;
+            } else {
+                accessCodeGroup.style.display = 'none';
+                continueBtn.disabled = true;
+            }
+        });
+        
+        // Validasi input kode akses
+        accessCodeInput.addEventListener('input', function() {
+            const code = this.value.toUpperCase();
+            
+            // Validasi format: 4 huruf + 3 angka
+            if (/^[A-Z]{4}\d{3}$/.test(code)) {
+                accessCodeError.style.display = 'none';
+                accessCodeSuccess.textContent = "Format kode akses valid!";
+                accessCodeSuccess.style.display = 'block';
+                continueBtn.disabled = false;
+            } else if (code.length > 0) {
+                accessCodeError.textContent = "Format harus 4 huruf diikuti 3 angka (contoh: BSHT244)";
+                accessCodeError.style.display = 'block';
+                accessCodeSuccess.style.display = 'none';
+                continueBtn.disabled = true;
+            } else {
+                accessCodeError.style.display = 'none';
+                accessCodeSuccess.style.display = 'none';
+                continueBtn.disabled = true;
+            }
+        });
+        
+        // =================== PROSES AKSES LINK KONSELOR ===================
+        continueBtn.addEventListener('click', function() {
+            if (!selectedClass) {
+                alert("Silakan pilih kelas terlebih dahulu!");
+                return;
+            }
+            
+            const accessCode = accessCodeInput.value.toUpperCase();
+            
+            // Validasi format kode akses
+            if (!/^[A-Z]{4}\d{3}$/.test(accessCode)) {
+                accessCodeError.textContent = "Format kode akses tidak valid!";
+                accessCodeError.style.display = 'block';
+                return;
+            }
+            
+            // Ambil 3 angka terakhir dari kode akses
+            const threeDigits = accessCode.substring(4, 7);
+            
+            // Buat link sesuai template
+            const classId = selectedClass;
+            const finalLink = `${BASE_LINK}/${classId}/${threeDigits}`;
+            
+            // Play musik jika belum diputar
+            if (!isMusicPlaying) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    audioToggle.innerHTML = '<i class="fas fa-pause"></i>';
+                }).catch(error => {
+                    console.log("Autoplay prevented:", error);
+                });
+            }
+            
+            // Konfirmasi sebelum redirect
+            const className = CLASS_DATA[selectedClass].name;
+            const confirmRedirect = confirm(
+                `Anda akan diarahkan ke link konselor untuk:\n\n` +
+                `Kelas: ${className}\n` +
+                `Kode Akses: ${accessCode}\n` +
+                `Link: ${finalLink}\n\n` +
+                `Klik "OK" untuk melanjutkan ke tab baru.`
+            );
+            
+            if (confirmRedirect) {
+                // Buka link di tab baru
+                window.open(finalLink, '_blank');
+            }
+        });
+        
+        // =================== POPUP & AUDIO CONTROLS ===================
+        popupContinueBtn.addEventListener('click', function() {
+            welcomePopup.classList.remove('active');
+            
+            // Play musik saat lanjutkan
+            if (!isMusicPlaying) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    audioToggle.innerHTML = '<i class="fas fa-pause"></i>';
+                }).catch(error => {
+                    console.log("Autoplay prevented:", error);
+                });
+            }
+        });
+        
+        secretCloseBtn.addEventListener('click', function() {
+            secretPopup.classList.remove('active');
+            // Reset form
+            secretCodeInput.value = "";
+            materiInput.value = "";
+            kodeInput.value = "";
+            secretError.style.display = 'none';
+            secretSuccess.style.display = 'none';
+            materiError.style.display = 'none';
+            kodeError.style.display = 'none';
+            codeDisplay.style.display = 'none';
+            secretAccessContent.style.display = 'none';
+        });
+        
+        audioToggle.addEventListener('click', function() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                audioToggle.innerHTML = '<i class="fas fa-music"></i>';
+            } else {
+                bgMusic.play().then(() => {
+                    audioToggle.innerHTML = '<i class="fas fa-pause"></i>';
+                }).catch(error => {
+                    console.log("Play failed:", error);
+                    alert("Silakan klik tombol 'Lanjutkan' terlebih dahulu untuk memutar musik.");
+                    return;
+                });
+            }
+            
+            isMusicPlaying = !isMusicPlaying;
+        });
+        
+        bgMusic.addEventListener('ended', function() {
+            isMusicPlaying = false;
+            audioToggle.innerHTML = '<i class="fas fa-music"></i>';
+        });
+        
+        // Handle image error
+        profileImg.addEventListener('error', function() {
+            this.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Ccircle cx='75' cy='75' r='75' fill='%231a73e8'/%3E%3Ctext x='50%25' y='40%25' text-anchor='middle' fill='white' font-size='22' font-weight='bold'%3EBK%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' fill='white' font-size='16'%3EKonselor%3C/text%3E%3C/svg%3E";
+            this.alt = "Placeholder - Konselor BK";
+        });
+        
+        // Keyboard accessibility
+        document.addEventListener('keydown', function(event) {
+            // Enter untuk validasi kode rahasia
+            if (event.key === 'Enter' && document.activeElement === secretCodeInput && secretCodeInput.value) {
+                const code = secretCodeInput.value.toUpperCase();
+                if (SECRET_CODES[code]) {
+                    secretAccessContent.style.display = 'block';
+                }
+            }
+            
+            // Enter untuk generate kode
+            if (event.key === 'Enter' && document.activeElement === materiInput && materiInput.value) {
+                generateBtn.click();
+            }
+            
+            // Enter untuk akses link konselor
+            if (event.key === 'Enter' && document.activeElement === accessCodeInput && !continueBtn.disabled) {
+                continueBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
